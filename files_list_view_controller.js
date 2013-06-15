@@ -93,24 +93,24 @@ FilesListViewController.prototype.listViewNumberOfRows = function() {
 
 FilesListViewController.prototype.listViewElementForRow = function(rowIndex) {
   var fileicon = $('<img src="img/file-regular.png"/>');
-  var text = $('<span class="file-item-text">' + htmlEncode(this.entries[rowIndex].name) + '</span>');
+  var text = $('<span class="file-item-text">' + _.escape(this.entries[rowIndex].name) + '</span>');
   var caret = $('<span class="caret"></span>');
   var dropdown = $('<div></div>');
   var link = $('<a href="#"></a>');
   link.append(caret);
   dropdown.append(link);
-  
+
   var listitem =  $("<div class=\"file-item\"></div>");
   listitem.append(fileicon);
   listitem.append(text);
   listitem.append(dropdown);
   var controller = this;
-  
+
   link.click(function(e) {
     if ($('#files-menu').css('display') == 'block') {
       return;
     }
-    
+
     // Select item if not selected.
     var isSelected = false;
     controller.listView.selectedRows().forEach(function(currentRowIndex, i) {
@@ -121,10 +121,10 @@ FilesListViewController.prototype.listViewElementForRow = function(rowIndex) {
     if (!isSelected) {
       controller.listView.setSelectedRow(rowIndex);
     }
-    
+
     controller.delegate.filesListViewControllerShowContextMenuForElement(link, e);
   });
-  
+
   return listitem;
 }
 

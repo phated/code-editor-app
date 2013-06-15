@@ -10,11 +10,11 @@ Set.prototype.add = function(a) {
   this.content[a] = true;
 }
 
-Set.prototype.remove = function(a) {
+Set.prototype.delete = function(a) {
   delete this.content[a];
 }
 
-Set.prototype.contains = function(a) {
+Set.prototype.has = function(a) {
   return (a in this.content);
 }
 
@@ -22,6 +22,6 @@ Set.prototype.allObjects = function() {
   return Object.keys(this.content);
 }
 
-Set.prototype.removeAll = function() {
+Set.prototype.clear = function() {
   this.content = new Object();
 }

@@ -48,19 +48,19 @@ var TreeView = function(element, delegate) {
 
 TreeView.prototype.reloadData = function() {
   this.expandedSet = new Set();
-  
+
   var treeview = this;
   this.items.forEach(function(cell, i) {
     if (cell.expanded) {
       treeview.expandedSet.add(cell.nodeUID);
     }
   })
-  
+
   this.items.length = 0;
   this._fillListForNodeUID(null, 0);
-  
-  this.expandedSet.removeAll();
-  
+
+  this.expandedSet.clear();
+
   this.listView.reloadData();
 }
 
@@ -70,18 +70,18 @@ TreeView.prototype._fillListForNodeUID = function(nodeUID, indentationLevel) {
     var cell = new TreeViewCell();
     cell.nodeUID = nodeUID;
     if (nodeUID != null) {
-      if (this.expandedSet.contains(nodeUID)) {
+      if (this.expandedSet.has(nodeUID)) {
         cell.expanded = true;
       }
     }
     cell.hasChildren = this.delegate.hasChildren(nodeUID);
     cell.indentationLevel = indentationLevel;
     this.items.push(cell);
-    
+
     addChildren = cell.expanded;
   }
   else {
-    addChildren = true; 
+    addChildren = true;
   }
   if (addChildren) {
     var count = this.delegate.numberOfChildren(nodeUID);

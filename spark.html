@@ -2,23 +2,24 @@
 <html>
 <head>
 
-  <script src="jquery-1.9.1.min.js"></script>
-  <script src="jszip/jszip.js"></script>
-  <script src="bootstrap/js/bootstrap.min.js"></script>
-  <script src="codemirror-3.1/lib/codemirror.js"></script>
-  <script src="codemirror-3.1/addon/hint/javascript-hint.js"></script>
-  <script src="codemirror-3.1/addon/hint/show-hint.js"></script>
-  <script src="codemirror-3.1/mode/css/css.js"></script>
-  <script src="codemirror-3.1/mode/xml/xml.js"></script>
-  <script src="codemirror-3.1/mode/javascript/javascript.js"></script>
-  <script src="codemirror-3.1/mode/htmlmixed/htmlmixed.js"></script>
-  <script src="ebidel/dnd.js"></script>
-  <script src="ebidel/filer.min.js"></script>
+  <script src="components/jquery/jquery.js"></script>
+  <script src="components/jszip/jszip.js"></script>
+  <script src="components/bootstrap/docs/assets/js/bootstrap.js"></script>
+  <script src="components/lodash/dist/lodash.js"></script>
 
-  <script src="htmlencode.js"></script>
-  <script src="globals.js"></script>
-  <script src="util.js"></script>
+  <script src="components/codemirror/lib/codemirror.js"></script>
+  <script src="components/codemirror/addon/hint/javascript-hint.js"></script>
+  <script src="components/codemirror/addon/hint/show-hint.js"></script>
+  <script src="components/codemirror/mode/css/css.js"></script>
+  <script src="components/codemirror/mode/xml/xml.js"></script>
+  <script src="components/codemirror/mode/javascript/javascript.js"></script>
+  <script src="components/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+
+  <script src="components/filer.js/demos/js/dnd.js"></script>
+  <script src="components/filer.js/src/filer.js"></script>
+
   <script src="buffer.js"></script>
+  <script src="util.js"></script>
   <script src="file_tree.js"></script>
   <script src="template_loader.js"></script>
   <script src="spark.js"></script>
@@ -27,9 +28,9 @@
   <script src="files_list_view_controller.js"></script>
   <script src="absolutepos.js"></script>
 
-  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-  <link rel="stylesheet" href="codemirror-3.1/lib/codemirror.css">
-  <link rel="stylesheet" href="codemirror-3.1/addon/hint/show-hint.css">
+  <link rel="stylesheet" href="components/bootstrap/docs/assets/css/bootstrap.css">
+  <link rel="stylesheet" href="components/codemirror/lib/codemirror.css">
+  <link rel="stylesheet" href="components/codemirror/addon/hint/show-hint.css">
   <link rel="stylesheet" href="style.css">
 
 </head>
@@ -47,7 +48,7 @@
           <li><a tabindex="-1" data-toggle="modal" href="#AddFileModal">File</a></li>
         </ul>
       </div>
-      
+
       <div id="right-buttons">
         <button id="run-button" class="btn btn-primary tt"
         title="Reloads and runs the project in Chrome.">Run</button>
@@ -55,7 +56,7 @@
         title="Exports the entire project as a zip file.">Export</button>
       </div>
     </div>
-    
+
     <div id="modals">
       <!-- Modal Add Project -->
       <div id="AddProjectModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -72,7 +73,7 @@
           <button class="btn btn-primary">Create</button>
         </div>
       </div>
-      
+
       <!-- Modal Add File -->
       <div id="AddFileModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-header">
@@ -89,7 +90,7 @@
           <button class="btn btn-primary">Add</button>
         </div>
       </div>
-      
+
       <!-- Modal Remove Files -->
       <div id="RemoveFilesModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-header">

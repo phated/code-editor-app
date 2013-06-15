@@ -68,11 +68,11 @@ ListView.prototype.reloadData = function() {
     window.clearTimeout(this.cleanupTimer);
     this.cleanupTimer = null;
   }
-  
+
   this.firstVisibleRowIndex = 0;
   this.lastVisibleRowIndex = -1;
   this._cleanupCells();
-  
+
   this.cells = new Array();
   var count = this.delegate.listViewNumberOfRows();
   var y = 0;
@@ -83,7 +83,7 @@ ListView.prototype.reloadData = function() {
     cell.y = y;
     cell.height = this.delegate.listViewHeightForRow(i);
     y += cell.height;
-    if (this.selectedRowsSet.contains(i)) {
+    if (this.selectedRowsSet.has(i)) {
       updatedSelectedRowsSet.add(i);
     }
   }
@@ -97,7 +97,7 @@ ListView.prototype._rowIndexForTopPositionBounds = function(top, leftBound, righ
     return leftBound;
   }
   var middle = Math.ceil((leftBound + rightBound) / 2);
-  
+
   if (top >= this.cells[middle].y) {
     // middle, rightBound
     if (middle == leftBound) {
@@ -125,7 +125,7 @@ ListView.prototype.setSelectedRows = function(rowIndexes) {
       listview.cells[rowIndex].element.css('background-color', '');
     }
   });
-  this.selectedRowsSet.removeAll();
+  this.selectedRowsSet.clear();
   rowIndexes.forEach(function(rowIndex, i) {
     listview.selectedRowsSet.add(rowIndex);
   });
@@ -151,12 +151,12 @@ ListView.prototype._handleRowDoubleClicked = function(rowIndex, e) {
 
 ListView.prototype._handleRowClicked = function(rowIndex, e) {
   if (e.ctrlKey || e.metaKey) {
-    if (this.selectedRowsSet.contains(rowIndex)) {
+    if (this.selectedRowsSet.hase(rowIndex)) {
       var newSelection = new Set();
       this.selectedRows().forEach(function(rowIndex, i) {
         newSelection.add(rowIndex);
       });
-      newSelection.remove(rowIndex);
+      newSelection.delete(rowIndex);
       this.setSelectedRows(newSelection.allObjects());
     } else {
       var selection = this.selectedRows();
@@ -192,7 +192,7 @@ ListView.prototype._updateScrollArea = function() {
   if (this.cells.length == 0) {
     return;
   }
-  
+
   var y = this.element.scrollTop();
   var firstVisibleRowIndex = this._rowIndexForTopPosition(y);
   var lastVisibleRowIndex = this._rowIndexForTopPosition(y + this.element.height());
@@ -206,7 +206,7 @@ ListView.prototype._updateScrollArea = function() {
     elt.css('width', '100%');
     elt.css('top', this.cells[i].y + 'px');
     elt.css('height', this.cells[i].height + 'px');
-    if (this.selectedRowsSet.contains(i)) {
+    if (this.selectedRowsSet.has(i)) {
       elt.css('background-color', ListView.selectedColor);
     }
     elt.append(this.delegate.listViewElementForRow(i));
@@ -215,7 +215,7 @@ ListView.prototype._updateScrollArea = function() {
     this.cells[i].element = elt;
     this.innerElement.append(elt);
   }
-  
+
   if (firstVisibleRowIndex < this.existingMinimumRowIndex) {
     this.existingMinimumRowIndex = firstVisibleRowIndex;
   }
@@ -224,7 +224,7 @@ ListView.prototype._updateScrollArea = function() {
   }
   this.firstVisibleRowIndex = firstVisibleRowIndex;
   this.lastVisibleRowIndex = lastVisibleRowIndex;
-  
+
   var listView = this;
   if (this.cleanupTimer != null) {
     window.clearTimeout(this.cleanupTimer);

@@ -2,10 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-function toArray(list) {
-  return Array.prototype.slice.call(list || [], 0);
-}
-
 function errorHandler(e) {
   var msg = "";
 
