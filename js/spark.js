@@ -560,7 +560,7 @@ Spark.prototype.handleExportButton = function(e) {
 };
 
 Spark.prototype.loadProjects = function(callback) {
-  var reader = this.fileSystem.root.createReader();
+  var reader = this.filer.fs.root.createReader();
   this.projects = {};
   var handleProjectsLs = function(projects) {
     for (var i = 0; i < projects.length; ++i) {
@@ -590,8 +590,7 @@ Spark.prototype.createProject = function(project_name, callback) {
     };
     this.templateLoader.loadTemplate(templateLoadCb.bind(this));
   };
-  this.fileSystem.root.getDirectory(project_name,{create:true},
-      handleLoadProject.bind(this), errorHandler);
+  this.filer.mkdir(project_name, false, handleLoadProject.bind(this), errorHandler);
 };
 
 Spark.prototype.loadPrefsFile = function(callback) {
@@ -620,7 +619,7 @@ Spark.prototype.loadPrefsFile = function(callback) {
       };
     });
   };
-  this.filer.fs.root.getFile('prefs', {create: true}, handleOpenPrefs);
+  this.filer.create('prefs', false, handleOpenPrefs);
 };
 
 Spark.prototype.writePrefs = function() {
@@ -641,11 +640,10 @@ Spark.prototype.writePrefs = function() {
 Spark.prototype.onSyncFileSystemOpened = function(fs) {
   var spark = this;
   console.log("Obtained sync file system");
-  this.fileSystem = fs;
   this.filer = new Filer(fs);
   this.fileTree = new FileTree(this.filer, this);
-  this.templateLoader = new TemplateLoader(this.fileTree, this);
-  this.activeProject = this.fileSystem.root;
+  this.templateLoader = new TemplateLoader(this.filer, this);
+  this.activeProject = fs.root;
 
   chrome.syncFileSystem.setConflictResolutionPolicy('last_write_win');
 
