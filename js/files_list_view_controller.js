@@ -92,8 +92,9 @@ FilesListViewController.prototype.listViewNumberOfRows = function() {
 }
 
 FilesListViewController.prototype.listViewElementForRow = function(rowIndex) {
-  var fileicon = $('<img src="img/file-regular.png"/>');
-  var text = $('<span class="file-item-text">' + _.escape(this.entries[rowIndex].name) + '</span>');
+  var entry = this.entries[rowIndex];
+  var fileicon = entry.isDirectory ? $('<i class="icon-folder-close"></i>') : $('<i class="icon-file"></i>');
+  var text = $('<span class="file-item-text">' + _.escape(entry.name) + '</span>');
   var caret = $('<span class="caret"></span>');
   var dropdown = $('<div></div>');
   var link = $('<a href="#"></a>');
