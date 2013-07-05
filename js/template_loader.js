@@ -5,7 +5,7 @@
 TemplateLoader = function(filer, spark) {
   this.spark = spark;
   this.filer = filer;
-}
+};
 
 TemplateLoader.prototype.loadTemplate = function(callback) {
   var activeProject = this.spark.projects[this.spark.ActiveProjectName];
@@ -21,4 +21,4 @@ TemplateLoader.prototype.loadTemplate = function(callback) {
       }
     });
   });
-}
+};
