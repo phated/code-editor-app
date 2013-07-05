@@ -3,7 +3,8 @@
 // found in the LICENSE file.
 
 Spark = function() {
-  chrome.syncFileSystem.requestFileSystem(this.onSyncFileSystemOpened.bind(this));
+  // chrome.syncFileSystem.requestFileSystem(this.onSyncFileSystemOpened.bind(this));
+  window.requestFileSystem(window.PERSISTENT, 5*1024*1024 /*5MB*/, this.onSyncFileSystemOpened.bind(this));
 
   var spark = this;
 
@@ -645,23 +646,23 @@ Spark.prototype.onSyncFileSystemOpened = function(fs) {
   this.templateLoader = new TemplateLoader(this.filer, this);
   this.activeProject = fs.root;
 
-  chrome.syncFileSystem.setConflictResolutionPolicy('last_write_win');
+  // chrome.syncFileSystem.setConflictResolutionPolicy('last_write_win');
 
-  chrome.syncFileSystem.onFileStatusChanged.addListener(
-      function(detail) {
-        if (detail.direction == 'remote_to_local') {
-          spark.loadProjects(function() {spark.refreshProjectList();});
-          var buffer = openedTabHash[detail.fileEntry.name];
-          if (buffer && buffer.fileEntry.fullPath == detail.fileEntry.fullPath) {
-            buffer.fileEntry = detail.fileEntry;
-            buffer.open();
-            if (spark.currentBuffer.fileEntry.fullPath
-                    == detail.fileEntry.fullPath) {
-              spark.editor.swapDoc(buffer.doc);
-            }
-          }
-        }
-      });
+  // chrome.syncFileSystem.onFileStatusChanged.addListener(
+  //     function(detail) {
+  //       if (detail.direction == 'remote_to_local') {
+  //         spark.loadProjects(function() {spark.refreshProjectList();});
+  //         var buffer = openedTabHash[detail.fileEntry.name];
+  //         if (buffer && buffer.fileEntry.fullPath == detail.fileEntry.fullPath) {
+  //           buffer.fileEntry = detail.fileEntry;
+  //           buffer.open();
+  //           if (spark.currentBuffer.fileEntry.fullPath
+  //                   == detail.fileEntry.fullPath) {
+  //             spark.editor.swapDoc(buffer.doc);
+  //           }
+  //         }
+  //       }
+  //     });
 
   var loadPrefsFileCb = function() {
     this.refreshProjectList();
@@ -673,45 +674,17 @@ Spark.prototype.onSyncFileSystemOpened = function(fs) {
   };
   this.loadProjects(loadProjectsCb.bind(this));
 
-  var spark = this;
   var dnd = new DnDFileController('body', function(files, e) {
     var items = e.dataTransfer.items;
-    var entries = new Array();
-    var pendingCount = 0;
-    for (var i = 0, item; item = items[i]; ++i) {
+    _.forEach(items, function(item){
       var entry = item.webkitGetAsEntry();
-      entries.push(entry);
-      var writeendCb = function() {
+      spark.filer.cp(entry, spark.projects[spark.ActiveProjectName], null, function(){
         console.log('writes done.');
-        pendingCount --;
-        if (pendingCount == 0) {
-          spark.fileTree.refresh(false, function() {
-            spark.filesListViewController.setSelection(entries);
-          });
-        }
-      }
-      if (entry.isDirectory) {
-        var reader = entry.createReader();
-        var handleDnDFoler = function(entries) {
-          var fileEntries = [];
-          for (var i = 0; i < entries.length; ++i) {
-            if (entries[i].isDirectory) {
-              console.log('Directories are not supported currently. Skipping'
-                + ' adding: ' + entries[i].name);
-              continue;
-            }
-            fileEntries.push(entries[i]);
-          }
-
-          pendingCount ++
-          spark.templateLoader.writeFiles(fileEntries, writeendCb);
-        };
-        reader.readEntries(handleDnDFoler.bind(this));
-      } else {
-        pendingCount ++
-        spark.templateLoader.writeFiles([entry], writeendCb);
-      }
-    }
+        spark.fileTree.refresh(false, function() {
+          spark.filesListViewController.setSelection(entries);
+        });
+      });
+    });
   });
 };
 
