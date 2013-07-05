@@ -6,7 +6,8 @@
     "codemirror": "~3.13.0",
     "jquery": "~2.0.2",
     "jszip": "~1.0.0",
-    "filer.js": "latest"
+    "filer.js": "latest",
+    "bootstrap": "2.3.2"
   },
   "ignore": [
     "**/.*",
