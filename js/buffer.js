@@ -15,17 +15,17 @@ Buffer = function(fileEntry, spark) {
     fileEntry.name + "</a></li>");
   this.tabElement.click(this.switchTo.bind(this));
   var matches = this.tabElement.children().children();
-  
+
   var buffer = this;
   matches.click(this.userRemoveTab.bind(this))
-  
+
   $("#tabs").append(this.tabElement);
   openedTabEntries.push(this);
   openedTabHash[fileEntry.name] = this;
 
   var pattern = /\.(jpg|jpeg|png|gif)$/i;
   this.isImage = pattern.test(fileEntry.name);
-  
+
   this.doc = CodeMirror.Doc('<loading>');
 
   this.open();
@@ -160,9 +160,9 @@ Buffer.prototype.save = function() {
       fileWriter.write(blob);
       fileWriter.onwriteend = function(e) {
         buffer.isDirty = false;
-        chrome.developerPrivate.exportSyncfsFolderToLocalfs(
-            buffer.spark.ActiveProjectName,
-            function(){});
+        // chrome.developerPrivate.exportSyncfsFolderToLocalfs(
+        //     buffer.spark.ActiveProjectName,
+        //     function(){});
       }
     };
 
